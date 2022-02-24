@@ -11,7 +11,7 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class ScopesInlineFormset(BaseInlineFormSet):
+class TagScopesInlineFormset(BaseInlineFormSet):
     def clean(self):
         all_tag_count = list(form.cleaned_data['tag'].id for form in self.forms if form.cleaned_data)
         main_tag_count = list(form.cleaned_data['tag'].id for form in self.forms if form.cleaned_data if form.cleaned_data['is_main'] is True)
@@ -28,9 +28,9 @@ class ScopesInlineFormset(BaseInlineFormSet):
         return super().clean()
 
 
-class ScopeInline(admin.TabularInline):
+class TagScopeInline(admin.TabularInline):
     model = TagScope
-    formset = ScopesInlineFormset
+    formset = TagScopesInlineFormset
     extra = 1
 
 
@@ -38,4 +38,4 @@ class ScopeInline(admin.TabularInline):
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ['title', 'text', 'published_at', 'image']
     list_filter = ['published_at']
-    inlines = [ScopeInline]
+    inlines = [TagScopeInline]
